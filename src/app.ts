@@ -7,12 +7,13 @@ import * as Router from 'koa-router'
 import * as os from 'os'
 import * as util from 'util'
 
-import {logger} from './logger'
-import {parseBool} from './utils'
+import { logger } from './logger'
+import { parseBool } from './utils'
 
 export const app = new Koa()
 export const router = new Router()
 export const version = require('./version')
+export const git = require('./git')
 
 app.proxy = parseBool(config.get('proxy'))
 app.on('error', (error) => {
@@ -20,9 +21,11 @@ app.on('error', (error) => {
 })
 
 async function healthcheck(ctx: Koa.Context) {
+    console.log(ctx);
+
     const ok = true
     const date = new Date()
-    ctx.body = {ok, version, date}
+    ctx.body = { ok, version, git, date }
 }
 
 router.get('/', healthcheck)
@@ -32,7 +35,7 @@ app.use(router.routes())
 
 async function main() {
     if (cluster.isMaster) {
-        logger.info({version}, 'starting service')
+        logger.info({ version }, 'starting service')
     }
 
     const server = http.createServer(app.callback())
