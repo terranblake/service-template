@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bunyan": "^2.0.2",
-    "config": "^3.0.1",
+    "config": "^3.3.8",
     "koa": "^2.3.0",
     "koa-router": "^7.4.0",
     "toml": "^3.0.0"
